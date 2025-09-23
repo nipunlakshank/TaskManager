@@ -16,23 +16,18 @@ new class extends Component {
     {
         $this->validate();
 
-        Task::create(['user_id' => auth()->id(), 'title' => $this->title, 'description' => $this->description]);
+        Task::create(['user_id' => auth()->id(), 'title' => $this->title, 'description' => $this->description ?? '']);
 
         $this->dispatch('refreshTasksList')->to('tasks.list');
 
         $this->reset(['title', 'description']);
         session()->flash('message', 'Task created successfully.');
     }
-
-    public function render(): mixed
-    {
-        return view('livewire.tasks.create');
-    }
 };
 
 ?>
 
-<div class="p-4 flex flex-col gap-4">
+<div class="p-4 flex flex-col w-full">
     <form wire:submit.prevent="createTask" class="flex flex-col gap-4">
 
         <flux:field>
