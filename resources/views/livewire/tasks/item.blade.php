@@ -36,15 +36,7 @@ new class extends Component {
 <div>
     <flux:callout
         :class="$task->is_completed ? 'border-green-500/30 bg-green-50/10' : 'border-yellow-500/30 bg-yellow-50/10'"
-        :icon="$task->is_completed ? 'clipboard-document-check' : 'clipboard-document-list'" inline="true">
-
-        <x-slot name="icon">
-            @if( $task->is_completed )
-                <flux:icon.clipboard-document-check class="h-6 w-6 text-green-500" />
-            @else
-                <flux:icon.clipboard-document-list class="h-6 w-6 text-yellow-500" />
-            @endif
-        </x-slot>
+        inline="true">
 
         <x-slot name="actions">
             <div class="flex flex-col w-full gap-2">
@@ -73,7 +65,17 @@ new class extends Component {
             </div>
         </x-slot>
 
-        <flux:callout.heading>{{ $task->title }}</flux:callout.heading>
+        <flux:callout.heading class="self-start">
+            <x-slot name="icon">
+                @if( $task->is_completed )
+                    <flux:icon.clipboard-document-check class="h-6 w-6 text-green-500" />
+                @else
+                    <flux:icon.clipboard-document-list class="h-6 w-6 text-yellow-500" />
+                @endif
+            </x-slot>
+
+            {{ $task->title }}
+        </flux:callout.heading>
         <flux:callout.text
             class="text-sm opacity-75">{{ $task->created_at->format('H:i A | M d, Y') }}</flux:callout.text>
 
