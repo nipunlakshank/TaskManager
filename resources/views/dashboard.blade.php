@@ -15,6 +15,10 @@
             </div>
         </div>
 
+        @livewire('tasks.edit')
+
+        @livewire('tasks.delete')
+
         @if (session('status'))
             <div class="fixed mx-auto left-[70%] bottom-4 right-4 z-50">
                 <flux:callout variant="success" icon="check-circle" heading="Success">

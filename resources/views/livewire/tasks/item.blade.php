@@ -17,14 +17,12 @@ new class extends Component {
 
     public function editTask(): void
     {
-        $this->dispatch('openModal')->to('tasks.edit', ['task' => $this->task]);
+        $this->dispatch('openModal', ['task' => $this->task])->to('tasks.edit');
     }
 
     public function deleteTask(): void
     {
-        $this->task->delete();
-
-        $this->dispatch('refreshTasksList')->to('tasks.list');
+        $this->dispatch('openModal', ['task' => $this->task])->to('tasks.delete');
     }
 
     public function mount($task): void
@@ -64,6 +62,7 @@ new class extends Component {
                 >
                     Edit
                 </button>
+
                 <button
                     type="button"
                     class="text-sm text-red-500 border border-red-500 rounded-md px-2 py-1 hover:bg-red-500 hover:text-white transition"
@@ -75,7 +74,8 @@ new class extends Component {
         </x-slot>
 
         <flux:callout.heading>{{ $task->title }}</flux:callout.heading>
-        <flux:callout.text class="text-sm opacity-75">{{ $task->created_at->format('H:i A | M d, Y') }}</flux:callout.text>
+        <flux:callout.text
+            class="text-sm opacity-75">{{ $task->created_at->format('H:i A | M d, Y') }}</flux:callout.text>
 
         @if( $task->description )
             <flux:callout.text>{{ $task->description }}</flux:callout.text>
