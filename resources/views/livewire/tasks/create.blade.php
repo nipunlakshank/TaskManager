@@ -42,6 +42,6 @@ new class extends Component {
             <flux:error name="description" />
         </flux:field>
 
-        <flux:button type="submit" class="self-start">Create Task</flux:button>
+        <flux:button type="submit" variant="primary" class="self-start">Create Task</flux:button>
     </form>
 </div>

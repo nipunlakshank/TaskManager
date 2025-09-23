@@ -9,33 +9,32 @@ new class extends Component {
 
     protected $listeners = ['refreshTasksList' => '$refresh'];
 
-    public function with()
+    public function with(): array
     {
-        return ['tasks' => Task::where('user_id', auth()->id())->orderBy('created_at', 'desc')->paginate(5)];
+        return [
+            'tasks' => Task::where('user_id', auth()->id())
+                ->orderBy('created_at', 'desc')
+                ->paginate(5),
+        ];
     }
 };
 
 ?>
 
-<div class="relative flex flex-col w-full h-full overflow-y-auto p-4">
-    @if ($tasks->isEmpty())
-        <p>No tasks available.</p>
-    @else
-        <ul class="flex flex-col gap-2 w-full">
-            @foreach ($tasks as $task)
-                <li class="p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg">
-                    <h3 class="text-lg font-semibold">{{ $task->title }}</h3>
-                    @if ($task->description)
-                        <p class="mt-2 truncate text-neutral-600 dark:text-neutral-400">{{ $task->description }}</p>
-                    @endif
-                    <p class="mt-2 text-sm text-neutral-500 dark:text-neutral-500">Created
-                        at: {{ $task->created_at->format('H:i A M d, Y') }}</p>
-                </li>
-            @endforeach
-        </ul>
-        <div
-            class="sticky -bottom-4 mt-2 bg-white dark:bg-neutral-800 py-2 border-t border-neutral-200 dark:border-neutral-700">
-            {{ $tasks->links() }}
-        </div>
-    @endif
+<div class="relative flex flex-col justify-between w-full overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700">
+    <div class="flex h-full w-full flex-col overflow-y-auto p-4">
+        @if ($tasks->isEmpty())
+            <p>No tasks available.</p>
+        @else
+            <ul class="flex w-full flex-col gap-2" wire:key="tasks-list">
+                @foreach ($tasks as $task)
+                    @livewire('tasks.item', ['task' => $task], key($task->id))
+                @endforeach
+            </ul>
+        @endif
+    </div>
+    <div
+        class="w-full p-4  border-t border-neutral-200 py-2 dark:border-neutral-700">
+        {{ $tasks->links() }}
+    </div>
 </div>
